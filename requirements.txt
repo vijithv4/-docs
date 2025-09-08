@@ -1,0 +1,5 @@
+fastapi==0.111.1
+uvicorn[standard]==0.23.2
+Jinja2==3.1.2
+markdown==3.4.4
+python-multipart==0.0.6
