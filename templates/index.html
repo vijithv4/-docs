@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Global Commercial CFM (Common Functional Model) Documentation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <style>
+    :root { --bg: #f5f7fa; --card: #fff; --primary: #3f51b5; --accent: #4caf50; --text: #333; --muted: #616161; --shadow: #e0e0e0; --hover: #e3eafc; }
+    [data-theme="dark"] { --bg: #0f172a; --card: #111827; --primary: #8ab4f8; --accent: #86efac; --text: #e5e7eb; --muted: #a1a1aa; --shadow: #0b1220; --hover: #1f2937; }
+    html, body { height: 100%; margin: 0; padding: 0; background: var(--bg); font-family: 'Roboto', Arial, sans-serif; font-size: 14px; color: var(--text); }
+    .mdl-layout__header { background: var(--primary); }
+    .toolbar { position: fixed; top: 12px; right: 16px; z-index: 5; display: flex; gap: 8px; align-items: center; }
+    .toolbar input[type="search"] { width: 280px; max-width: 50vw; padding: 8px 10px; border: 1px solid rgba(0,0,0,0.1); border-radius: 6px; background: var(--card); color: var(--text); }
+    .toolbar .chip { padding: 6px 10px; border-radius: 999px; background: var(--card); box-shadow: 0 1px 3px var(--shadow); cursor: pointer; }
+    .sidebar { width: 270px; background: var(--card); height: 100vh; position: fixed; left: 0; top: 0; box-shadow: 2px 0 8px var(--shadow); padding-top: 64px; overflow-y: auto; z-index: 2; font-size: 13px; }
+    .sidebar h4 { margin: 16px 0 8px 16px; color: var(--primary); font-weight: 600; font-size: 15px; }
+    .sidebar ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar li { padding: 6px 16px; cursor: pointer; font-weight: 500; border-left: 3px solid transparent; }
+    .sidebar li:hover, .sidebar li.active { background: var(--hover); border-left: 3px solid var(--primary); }
+    .sidebar .group-title { font-weight: 700; color: var(--primary); background: var(--hover); cursor: default; display: flex; align-items: center; }
+    .sidebar .expand-toggle { cursor: pointer; margin-right: 6px; font-weight: bold; font-family: monospace; display: inline-block; transition: transform 0.2s ease; }
+    .sidebar .expanded .expand-toggle { transform: rotate(90deg); }
+    .group-list { display: none; padding-left: 16px; list-style: none; margin: 0; }
+    .main-content { 
+      margin-left: 270px; 
+      padding: 24px 16px; 
+      min-height: 100vh; 
+      overflow: visible;
+      font-size: 16px; 
+      line-height: 1.5; 
+    }
+    .schema-card { background: var(--card); border-radius: 10px; box-shadow: 0 2px 8px var(--shadow); padding: 20px; margin-bottom: 24px; width: max-content; max-width: 100%; overflow-x: auto; }
+    .schema-title { font-size: 1.2em; color: var(--primary); font-weight: bold; margin-bottom: 8px; }
+    .schema-type { color: var(--accent); font-size: 1em; font-weight: 500; }
+    .schema-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+    .pill { font-family: 'Roboto', sans-serif; font-size: 12px; font-weight: 500; color: #fff; background-color: #3f51b5; padding: 4px 8px; border-radius: 12px; display: inline-block; transition: background 0.2s; white-space: nowrap; }
+    .pill:hover { background-color: #303f9f; }
+    .schema-desc { color: var(--muted); margin-bottom: 10px; font-size: 1em; }
+    .table-wrapper { width: max-content; overflow-x: auto; }
+    table { border-collapse: collapse; min-width: 1100px; table-layout: auto; background: var(--card); font-size: 15px; }
+    th, td { text-align: left; padding: 10px 12px; vertical-align: top; word-break: break-word; white-space: normal; border-bottom: 1px solid rgba(0,0,0,0.08); }
+    th { background: var(--hover); font-weight: 600; font-size: 14px; }
+    .attr-name { font-weight: bold; color: #1a237e; }
+    [data-theme="dark"] .attr-name { color: #93c5fd; }
+    .attr-type { color: var(--accent); font-weight: 500; }
+    .attr-desc { color: var(--muted); font-size: 13px; }
+    .attr-example code { background: var(--hover); padding: 2px 4px; border-radius: 4px; font-size: 13px; color: #ff5722; display: inline-block; margin: 2px 0; white-space: pre-wrap; }
+    .attr-children-row { background: rgba(0,0,0,0.02); }
+    .attr-children-table { margin-left: 18px; padding-left: 8px; border-left: 2px dashed rgba(0,0,0,0.1); }
+    .btn { border: 1px solid rgba(0,0,0,0.08); background: var(--card); padding: 6px 10px; border-radius: 8px; cursor: pointer; font-size: 14px; }
+    .btn:hover { background: var(--hover); }
+    .button-bar { margin-bottom: 16px; display: flex; gap: 8px; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+  <header class="mdl-layout__header">
+    <div class="mdl-layout__header-row">
+      <span class="mdl-layout-title">Global Commercial CFM (Common Functional Model) Documentation</span>
+      <div class="toolbar">
+        <input id="searchBox" type="search" placeholder="Search schemas…" />
+        <span class="chip" id="toggleTheme"><i class="material-icons" style="font-size:16px;">brightness_6</i> Theme</span>
+        <label for="cfmVersionDropdown" style="font-weight:600; color:white; margin-right:8px;" title="Lists all unique 'Since' versions from schema meta">Global Version:</label>
+        <select id="cfmVersionDropdown" style="padding:6px 10px; border-radius:6px; min-width:180px;" title="Lists all unique 'Since' versions from schema meta">
+          <option>Loading version…</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <div class="sidebar">
+    <h4>Schemas Details</h4>
+    <ul id="sidebar-tree"></ul>
+  </div>
+
+  <main class="main-content">
+    <div class="button-bar">
+      <button class="btn" id="copyName"><i class="material-icons" style="font-size:16px;vertical-align:middle;">content_copy</i> Copy Schema Name</button>
+      <button class="btn" id="expandAll"><i class="material-icons" style="font-size:16px;vertical-align:middle;">unfold_more</i> Expand All</button>
+      <button class="btn" id="collapseAll"><i class="material-icons" style="font-size:16px;vertical-align:middle;">unfold_less</i> Collapse All</button>
+    </div>
+
+    <div id="schema-details"></div>
+
+    <div id="relationship-info" class="schema-card" style="margin-top:20px; display:none;">
+      <div class="schema-title">Relationships</div>
+      <div id="relationship-text"></div>
+    </div>
+
+    <div id="relationship-chart" class="schema-card" style="margin-top:20px; display:none;">
+      <div class="schema-title">Schema Relationships</div>
+      <div id="mermaidChart"></div>
+    </div>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+  mermaid.initialize({ startOnLoad: false, theme: "default" });
+  window.mermaid = mermaid;
+</script>
+
+<script>
+const appState={activeId:null, rawTree:[]};
+
+function escapeHtml(s){return(""+s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+function mockDesc(desc,name){return (typeof desc==='string' && desc.trim()) ? desc : `No description for "${name}"`; }
+
+function renderAttributesTable(attrs,parentId){
+  if(!attrs||!attrs.length)return'<div class="muted">No attributes.</div>';
+  let html=`<table><thead><tr>
+    <th>Name</th><th>Type</th><th>Description</th><th>Examples</th><th>Meta</th>
+  </tr></thead><tbody>`;
+  attrs.forEach((attr,idx)=>{
+    const hasChildren=attr.children&&attr.children.length;
+    const rowId=(parentId||'attr')+'-'+idx+'-'+Math.random().toString(36).substr(2,5);
+    const examples=(attr.examples&&attr.examples.length)?attr.examples.map(e=>`<code>${escapeHtml(e)}</code>`).join('<br>'):'';
+    const meta=[attr.xSinceVersion?`<span class="pill">since: ${escapeHtml(attr.xSinceVersion)}</span>`:null,
+                attr.xFieldType?`<span class="pill">field: ${escapeHtml(attr.xFieldType)}</span>`:null,
+                attr.xTag?`<span class="pill">tag: ${escapeHtml(attr.xTag)}</span>`:null].filter(Boolean).join(' ');
+    html+=`<tr>
+      <td class="attr-name">${hasChildren?`<span class="expand-toggle" data-row="${rowId}">+</span>`:''}${escapeHtml(attr.name)}</td>
+      <td class="attr-type">${escapeHtml(attr.type||'')}</td>
+      <td class="attr-desc">${mockDesc(escapeHtml(attr.description),attr.name)}</td>
+      <td class="attr-example">${examples}</td>
+      <td>${meta}</td>
+    </tr>`;
+    if(hasChildren){
+      html+=`<tr id="${rowId}" class="attr-children-row" style="display:none;">
+        <td colspan="5" class="attr-children-table">${renderAttributesTable(attr.children,rowId)}</td>
+      </tr>`;
+    }
+  });
+  html+='</tbody></table>';
+  return html;
+}
+
+function renderSchemaCard(data){
+  let metaBadges='';
+  if(data.xSinceVersion) metaBadges+=`<span class="pill">since ${escapeHtml(data.xSinceVersion)}</span>`;
+  if(data.xFieldType) metaBadges+=`<span class="pill">${escapeHtml(data.xFieldType)}</span>`;
+  if(data.xTag) metaBadges+=`<span class="pill">tag: ${escapeHtml(data.xTag)}</span>`;
+  let html=`<div class="schema-card">
+    <div class="schema-title">${escapeHtml(data.title)} <span class="schema-type">${escapeHtml(data.type||'')}</span></div>
+    <div class="schema-meta">${metaBadges}</div>
+    <div class="schema-desc">${mockDesc(escapeHtml(data.description), data.title)}</div>
+    <div class="table-wrapper">${renderAttributesTable(data.attributes)}</div>
+  </div>`;
+  $('#schema-details').html(html);
+}
+
+function renderRelationshipInfo(data){
+  if ((!data.references || data.references.length===0) && (!data.referencedBy || data.referencedBy.length===0)) {
+    $('#relationship-info').hide(); return;
+  }
+  $('#relationship-info').show();
+  let textHtml="";
+  if (data.referencedBy && data.referencedBy.length){
+    textHtml += `<p><b>Referenced By:</b> ${data.referencedBy.join(", ")}</p>`;
+  }
+  if (data.references && data.references.length){
+    textHtml += `<p><b>References:</b> ${data.references.join(", ")}</p>`;
+  }
+  textHtml += `<p><b>Summary:</b> Referenced by ${data.relationshipSummary.referencedByCount} schemas, depends on ${data.relationshipSummary.referencesCount} schemas.</p>`;
+  $('#relationship-text').html(textHtml);
+}
+
+function renderRelationshipChart(data){
+  if ((!data.references || data.references.length===0) && (!data.referencedBy || data.referencedBy.length===0)) {
+    $('#relationship-chart').hide(); return;
+  }
+  $('#relationship-chart').show();
+  let mermaidDef = "graph TD;\n";
+  const current = data.title;
+  (data.referencedBy || []).forEach(refBy => { mermaidDef += `${refBy} -->|uses| ${current}\n`; });
+  (data.references || []).forEach(ref => { mermaidDef += `${current} -->|depends on| ${ref}\n`; });
+
+  const nodeCount = (data.references?.length || 0) + (data.referencedBy?.length || 0) + 1;
+  const height = Math.max(400, nodeCount * 50);
+  const width = Math.max(600, nodeCount * 150);
+  const chartDiv = document.getElementById("mermaidChart");
+  chartDiv.style.height = height + "px";
+  chartDiv.style.width = width + "px";
+  chartDiv.style.overflow = "auto";
+
+  const maxWidth = chartDiv.clientWidth - 20;
+  const scale = Math.min(1, maxWidth / width);
+
+  mermaid.render("mermaidGraph", mermaidDef).then(({ svg }) => {
+    chartDiv.innerHTML = svg;
+    chartDiv.querySelector("svg").style.transform = `scale(${scale})`;
+    chartDiv.querySelector("svg").style.transformOrigin = "top left";
+  });
+}
+
+function loadSchema(name){
+  $.getJSON(`/schema/${encodeURIComponent(name)}`, function(data){
+    appState.activeId=name;
+    renderSchemaCard(data);
+    renderRelationshipInfo(data);
+    renderRelationshipChart(data);
+  });
+}
+
+// Toggle attribute rows
+$(document).on('click', '.expand-toggle', function(){
+  const rowId = $(this).data('row');
+  const row = document.getElementById(rowId);
+  if(row.style.display==='none'){ row.style.display=''; $(this).text('-'); }
+  else { row.style.display='none'; $(this).text('+'); }
+});
+
+$(function(){
+  $.getJSON("/tree", function(tree){
+    appState.rawTree=tree;
+
+    const groups={GLOBAL:[],LC:[],MC:[],OTHERS:[]};
+    tree.forEach(n=>{
+      const type=(n.xFieldType||'OTHERS').toUpperCase();
+      if(type==='GLOBAL') groups.GLOBAL.push(n);
+      else if(type==='LC') groups.LC.push(n);
+      else if(type==='MC') groups.MC.push(n);
+      else groups.OTHERS.push(n);
+    });
+
+    function groupHtml(title, list){
+      if(!list.length) return '';
+      const groupId='group-'+title.toLowerCase();
+      return `
+        <li class="group-title">
+          <span class="expand-toggle" onclick="toggleSidebarGroup('${groupId}', this)">►</span>
+          ${escapeHtml(title)} (${list.length})
+        </li>
+        <ul id="${groupId}" class="group-list">
+          ${list.map(n => `<li data-id="${escapeHtml(n.id)}">${escapeHtml(n.text)}</li>`).join('')}
+        </ul>
+      `;
+    }
+
+    $('#sidebar-tree').html(
+      groupHtml('Global',groups.GLOBAL)+
+      groupHtml('LC',groups.LC)+
+      groupHtml('MC',groups.MC)+
+      groupHtml('Others',groups.OTHERS)
+    );
+
+    window.toggleSidebarGroup = function(groupId, el){
+      const $ul = $('#' + groupId);
+      const isExpanded = $ul.is(':visible');
+      $('.group-list').slideUp(200);
+      $('.group-title').removeClass('expanded');
+      $('.group-title .expand-toggle').text('►');
+      if(!isExpanded){
+        $ul.slideDown(200); $(el).text('▼'); $(el).closest('.group-title').addClass('expanded');
+      }
+    };
+
+    $('#sidebar-tree').on('click','li[data-id]',function(){
+      $('#sidebar-tree li').removeClass('active');
+      $(this).addClass('active'); 
+      loadSchema($(this).data('id'));
+    });
+
+    const first=$('#sidebar-tree li[data-id]').first();
+    if(first.length){ first.addClass('active'); loadSchema(first.data('id')); }
+  });
+
+  $('#toggleTheme').on('click',()=>{const root=document.documentElement;root.setAttribute('data-theme',root.getAttribute('data-theme')==='dark'?'light':'dark');});
+
+  $('#searchBox').on('input',function(){
+    const q=$(this).val().toLowerCase();
+    const filtered=appState.rawTree.filter(n=>(n.text+" "+(n.tag||'')).toLowerCase().includes(q));
+    $('#sidebar-tree').html(filtered.map(n=>`<li data-id="${escapeHtml(n.id)}">${escapeHtml(n.text)}</li>`).join(''));
+  });
+
+  $('#copyName').on('click',function(){
+    if(appState.activeId){navigator.clipboard.writeText(appState.activeId);
+      $(this).text('Copied!');setTimeout(()=>$(this).html('<i class="material-icons" style="font-size:16px;vertical-align:middle;">content_copy</i> Copy Schema Name'),1200);}
+  });
+
+  // Fetch versions
+  fetch('/versions')
+    .then(r=>r.json())
+    .then(versions=>{
+      const dropdown = document.getElementById('cfmVersionDropdown');
+      if(versions.length>0) dropdown.innerHTML = versions.map(v=>`<option>${v}</option>`).join('');
+      else dropdown.innerHTML=`<option>No version found</option>`;
+    })
+    .catch(()=>{document.getElementById('cfmVersionDropdown').innerHTML=`<option>No version found</option>`;});
+});
+</script>
+</body>
+</html>
